@@ -1,5 +1,7 @@
 library(dplyr)
 
+FORCE_LOAD = F;
+
 readFWF <- function(filename, fields) {
   fields <- mutate(fields, gap = start - lag(end, default = 0) - 1, cur = end - start + 1)
   fields$gap = -fields$gap
@@ -19,7 +21,10 @@ pregnancy.fields <- data.frame(
   name = c('caseid', 'nbrnaliv', 'babysex', 'birthwgt_lb',
            'birthwgt_oz', 'prglength', 'outcome', 'birthord', 'agepreg', 'finalwgt')
 )
-pregnancy <- readFWF("data/2002FemPreg.dat", pregnancy.fields)
+
+if (!exists('pregnancy') || FORCE_LOAD) {
+  pregnancy <- readFWF("data/2002FemPreg.dat", pregnancy.fields)
+}
 
 # Create the respondants table
 respondants.fields <- data.frame(
@@ -27,7 +32,10 @@ respondants.fields <- data.frame(
   end = c(12),
   name = c('caseid')
 )
-respondants <- readFWF("data/2002FemResp.dat", respondants.fields)
+
+if (!exists('respondants') || FORCE_LOAD) {
+  erespondants <- readFWF("data/2002FemResp.dat", respondants.fields)
+}
 
 info <- function() {
   cat ('Number of pregnancies', nrow(pregnancy), '\n')

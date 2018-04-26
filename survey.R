@@ -27,10 +27,13 @@ respondants.fields <- data.frame(
   end = c(12),
   name = c('caseid')
 )
-respondants = readFWF("data/2002FemResp.dat", respondants.fields)
+respondants <- readFWF("data/2002FemResp.dat", respondants.fields)
 
-cat ('Number of pregnancies', nrow(pregnancy), '\n')
-print (head(pregnancy))
+info <- function() {
+  cat ('Number of pregnancies', nrow(pregnancy), '\n')
+  print (head(pregnancy))
+  cat ('Number of respondants', nrow(respondants), '\n')
+  print (head(respondants))
+}
 
-cat ('Number of respondants', nrow(respondants), '\n')
-print (head(respondants))
+# info()

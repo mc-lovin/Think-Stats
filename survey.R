@@ -44,4 +44,9 @@ info <- function() {
   print (head(respondants))
 }
 
+
+lb <- function() {
+  library(crayon)
+  cat(blue("\n=======================\n"))
+}
 # info()

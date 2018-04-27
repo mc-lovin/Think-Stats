@@ -1,4 +1,4 @@
-source('survey.R')
+source('survey.r')
 library(dplyr)
 library(ggplot2)
 

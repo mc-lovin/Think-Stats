@@ -26,6 +26,6 @@ other.babies$freq = as.double(other.babies$freq)
 rownames(other.babies) <- NULL
 
 print (
-  ggplot() 
+  ggplot()
   + geom_line(data=first.babies, aes(week, freq), color='red')
   + geom_line(data=other.babies, aes(week, freq), color='blue'))

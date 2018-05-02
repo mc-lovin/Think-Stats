@@ -29,7 +29,12 @@ convertPaceToMPH <- function(entry) {
 
 # Since this is a continuous random distribution, making histogram plots does not make sense
 # Convert this into a probability distribution and plot it
+
+plotData <- function (speeds) {
+  par(mfrow=c(1,2))
+  plot(speeds, dnorm(speeds), type="l", xlab="speed", ylab="probability")
+  plot(speeds, pnorm(speeds), type="l", xlab="speed", ylab="cummulative probability")
+}
+
 speeds <- fetchData()
-par(mfrow=c(1,2))
-plot(speeds, dnorm(speeds), type="l", xlab="speed", ylab="probability")
-plot(speeds, pnorm(speeds), type="l", xlab="speed", ylab="cummulative probability")
+# plotData(speeds)

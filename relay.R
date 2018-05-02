@@ -15,7 +15,7 @@ fetchData <- function() {
       next
     }
     
-    speeds <- c(speed, convertPaceToMPH(record[6]))
+    speeds <- c(speeds, convertPaceToMPH(record[6]))
   }
   return (speeds)
 }

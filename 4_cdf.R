@@ -1,4 +1,6 @@
 source('helper.R')
+library(VGAM)
+
 records = readLines('data/babyboom.dat')
 times = c()
 for (line in 1:length(records)) {
@@ -22,7 +24,7 @@ savePlot('4_cdf.pdf')
 print (ggplot() + geom_line(data=cdf, aes(time, log(1-freq)), color='red'))
 savePlot('4_ccdf.pdf')
 
-# Since we don't expect this to be a uniform distribution because there are less no of records
+# Let us see how cdf and ccdf look like for random distributions
 random.distribution <- sample(1:100, 10000, replace=T)
 cdf <- makeCDFFromData(random.distribution, 'value', 'freq')
 
@@ -31,3 +33,21 @@ savePlot('4_random_cdf.pdf')
 
 print (ggplot() + geom_line(data=cdf, aes(value, log(1-freq)), color='red'))
 savePlot('4_random_ccdf.pdf')
+
+# Pareto Distribution
+# https://stackoverflow.com/questions/21792380/random-pareto-distribution-in-r-with-30-of-values-being-specified-amount
+
+paretoDistribution <- function(noOfRecords, val, percentile)  {
+  set.seed(1461)
+  alpha <- 1  # For simplicity let us assume alpha to be 1
+  k <- (1 - percentile) * (val) ^ (1/alpha)
+  return (data.frame(
+    no = rpareto(noOfRecords, k, alpha),
+    density = dpareto(1:100, k, alpha)
+  ))
+}
+
+pareto <- paretoDistribution(100, 40, 0.8)
+print (ggplot(pareto, aes(x=no))
+       + geom_histogram(color='black', aes(y=..density..), alpha=0)
+       + geom_density(color='red'))

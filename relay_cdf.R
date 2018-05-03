@@ -24,7 +24,6 @@ print (
   + ggtitle("Red: First Born, Blue: Others"))
 savePlot('cdf-baby-weights.pdf')
 
-
 # Generate random numbers b//w 1..100 and lets see there cdf ? Should look like a uniform distribution
 random.distribution <- table(sample(1:100, 1000, replace=T))
 random.distribution = getPrettyFactors(random.distribution, 'number', 'freq')

@@ -15,6 +15,11 @@ makeCDF <- function(data, colName) {
   return (data)
 }
 
+makeCDFFromData <- function(data, dataName, freqName) {
+  factors = getPrettyFactors(data, dataName, freqName)
+  return (makeCDF(factors, freqName))
+}
+
 savePlot <- function(fileName) {
   ggsave(fileName,
        plot = last_plot(),

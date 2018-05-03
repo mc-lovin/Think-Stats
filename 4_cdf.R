@@ -21,3 +21,13 @@ savePlot('4_cdf.pdf')
 
 print (ggplot() + geom_line(data=cdf, aes(time, log(1-freq)), color='red'))
 savePlot('4_ccdf.pdf')
+
+# Since we don't expect this to be a uniform distribution because there are less no of records
+random.distribution <- sample(1:100, 10000, replace=T)
+cdf <- makeCDFFromData(random.distribution, 'value', 'freq')
+
+print (ggplot() + geom_line(data=cdf, aes(value, freq), color='blue'))
+savePlot('4_random_cdf.pdf')
+
+print (ggplot() + geom_line(data=cdf, aes(value, log(1-freq)), color='red'))
+savePlot('4_random_ccdf.pdf')

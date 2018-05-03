@@ -1,4 +1,6 @@
 source('relay.R')
+source('helper.R')
+
 speeds <- fetchData()
 plotData(speeds)
 
@@ -8,28 +10,26 @@ first.babies <- pregnancy %>% subset(birthord == 1)
 
 # weight on these guys are discrete random variables, it should be a different probability
 # distribution
-first.babies.weights <- table(first.babies$birthwgt_oz)
-first.babies.weights <- first.babies.weight[-1]
-
-first.babies <- data.frame(
-  weights = as.numeric(rownames(first.babies.weights)),
-  freq = cumsum(first.babies.weights / sum(first.babies.weights))
-)
+first.babies = getPrettyFactors(first.babies$birthwgt_oz, 'weight', 'freq')
+first.babies = makeCDF(first.babies, 'freq')
 
 other.babies <- pregnancy %>% subset(birthord != 1)
-
-# weight on these guys are discrete random variables, it should be a different probability
-# distribution
-other.babies.weights <- table(other.babies$birthwgt_oz)
-other.babies.weights <- other.babies.weights[-1]
-
-other.babies <- data.frame(
-  weights = as.numeric(rownames(other.babies.weights)),
-  freq = cumsum(other.babies.weights / sum(other.babies.weights))
-)
+other.babies = getPrettyFactors(other.babies$birthwgt_oz, 'weight', 'freq')
+other.babies = makeCDF(other.babies, 'freq')
 
 print (
   ggplot()
-  + geom_line(data=first.babies, aes(weights, freq), color='red')
-  + geom_line(data=other.babies, aes(weights, freq), color='blue')
+  + geom_line(data=first.babies, aes(weight, freq), color='red')
+  + geom_line(data=other.babies, aes(weight, freq), color='blue')
   + ggtitle("Red: First Born, Blue: Others"))
+savePlot('cdf-baby-weights.pdf')
+
+
+# Generate random numbers b//w 1..100 and lets see there cdf ? Should look like a uniform distribution
+random.distribution <- table(sample(1:100, 1000, replace=T))
+random.distribution = getPrettyFactors(random.distribution, 'number', 'freq')
+random.distribution = makeCDF(random.distribution, 'freq')
+print (
+  ggplot()
+  + geom_line(data=random.distribution, aes(number, freq)))
+savePlot('cdf-random-distribution.pdf')

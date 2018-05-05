@@ -1,18 +1,7 @@
 library(dplyr)
+source('hepler.R')
 
 FORCE_LOAD = F;
-
-readFWF <- function(filename, fields) {
-  fields <- mutate(fields, gap = start - lag(end, default = 0) - 1, cur = end - start + 1)
-  fields$gap = -fields$gap
-
-  widths <- as.vector(rbind(fields$gap, fields$cur))
-  widths <- widths[widths != 0]
-  df <- read.fwf(filename, widths = widths)
-  
-  colnames(df) = fields$name
-  return (df)
-}
 
 # Create the pregnancy table
 pregnancy.fields <- data.frame(
@@ -22,9 +11,7 @@ pregnancy.fields <- data.frame(
            'birthwgt_oz', 'prglength', 'outcome', 'birthord', 'agepreg', 'finalwgt')
 )
 
-if (!exists('pregnancy') || FORCE_LOAD) {
-  pregnancy <- readFWF("data/2002FemPreg.dat", pregnancy.fields)
-}
+pregnancy <- readFWFFromCache("data/2002FemPreg.dat", pregnancy.fields, 'pregnancy')
 
 # Create the respondants table
 respondants.fields <- data.frame(
@@ -33,9 +20,7 @@ respondants.fields <- data.frame(
   name = c('caseid')
 )
 
-if (!exists('respondants') || FORCE_LOAD) {
-  erespondants <- readFWF("data/2002FemResp.dat", respondants.fields)
-}
+respondants <- readFWFFromCache("data/2002FemResp.dat", respondants.fields, 'respondants')
 
 info <- function() {
   cat ('Number of pregnancies', nrow(pregnancy), '\n')

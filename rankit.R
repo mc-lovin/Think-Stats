@@ -1,6 +1,7 @@
 source('helper.R')
 library(ggplot2)
 
+# This tells if the given data forms some sort of model.
 saveNormalDistributionPlot <- function(data, fileName) {
   df = data.frame(
     data = sort(data),
